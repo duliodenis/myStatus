@@ -12,3 +12,5 @@ An easy to use iOS App to set goals and track accomplishments.
 - you can complete goals to make accomplishments
 - you can make an accomplishment back into an uncompleted goal
 - delete goals / accomplishments
+- reorder goals in edit mode
+- tap gesture recognizer to invoke edit view in edit mode

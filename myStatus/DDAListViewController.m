@@ -7,6 +7,8 @@
 //
 
 #import "DDAListViewController.h"
+#import "DDAGoalTableViewCell.h"
+#import "DDAEditViewController.h"
 
 @interface DDAListViewController () <UITextFieldDelegate>
 
@@ -23,7 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
+    [self.tableView registerClass:[DDAGoalTableViewCell class] forCellReuseIdentifier:@"cell"];
     
     UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 260.0f, 32.0f)];
     textField.returnKeyType = UIReturnKeyGo;
@@ -62,6 +64,11 @@
 #pragma mark - UITextField Delegate Methods
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if (textField.text.length == 0) {
+        [textField resignFirstResponder];
+        return NO;
+    }
+    
     [self.goals insertObject:textField.text atIndex:0];
 
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
@@ -81,15 +88,12 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
+    DDAGoalTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     
-    cell.textLabel.text = [self arrayForSection:indexPath.section][indexPath.row];
+    [cell.editGestureRecognizer addTarget:self action:@selector(editGoal:)];
     
-    if (indexPath.section == 0) {
-        cell.textLabel.textColor = [UIColor blackColor];
-    } else if (indexPath.section == 1) {
-        cell.textLabel.textColor = [UIColor lightGrayColor];
-    }
+    cell.goal = [self arrayForSection:indexPath.section][indexPath.row];
+    cell.completed = indexPath.section == 1;
     
     return cell;
 }
@@ -103,7 +107,29 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     [[self arrayForSection:indexPath.section] removeObjectAtIndex:indexPath.row];
     [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationTop];
+    [self save];
 }
+
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath
+      toIndexPath:(NSIndexPath *)toIndexPath {
+    NSMutableArray *array = [self arrayForSection:fromIndexPath.section];
+    
+    NSString *goal = array[fromIndexPath.row];
+    [array removeObjectAtIndex:fromIndexPath.row];
+    [array insertObject:goal atIndex:toIndexPath.row];
+    [tableView moveRowAtIndexPath:fromIndexPath toIndexPath:toIndexPath];
+    [self save];
+}
+
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 1) {
+        return NO;
+    }
+    return YES;
+}
+
 
 #pragma mark - UITableView Delegate
 
@@ -162,6 +188,16 @@
         return self.goals;
     }
     return self.accomplishments;
+}
+
+
+- (void) editGoal: (UITapGestureRecognizer *)sender {
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:(UITableViewCell *)sender.view];
+    
+    NSLog(@"Edit Goal: %@", [self arrayForSection:indexPath.section][indexPath.row]);
+    
+    DDAEditViewController *editViewController = [[DDAEditViewController alloc] init];
+    [self.navigationController pushViewController:editViewController animated:YES];
 }
 
 @end
