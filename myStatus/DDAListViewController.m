@@ -64,12 +64,14 @@
 #pragma mark - UITextField Delegate Methods
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    if (textField.text.length == 0) {
+    NSString *text = [textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    if (text.length == 0) {
+        textField.text = nil;
         [textField resignFirstResponder];
         return NO;
     }
     
-    [self.goals insertObject:textField.text atIndex:0];
+    [self.goals insertObject:text atIndex:0];
 
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationTop];

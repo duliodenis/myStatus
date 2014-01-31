@@ -39,6 +39,7 @@
 - (UITapGestureRecognizer *)editGestureRecognizer {
     if (_editGestureRecognizer == nil) {
         _editGestureRecognizer = [[UITapGestureRecognizer alloc] init];
+        _editGestureRecognizer.delegate = self;
         [self addGestureRecognizer:_editGestureRecognizer];
     }
     return _editGestureRecognizer;
