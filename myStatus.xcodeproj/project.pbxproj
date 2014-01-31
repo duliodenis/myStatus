@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		6C2E72301898BA440069B37D /* DDAGoalTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C2E722F1898BA440069B37D /* DDAGoalTableViewCell.m */; };
 		6C2E72331899B3B70069B37D /* DDAEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C2E72321899B3B70069B37D /* DDAEditViewController.m */; };
+		6C2E7236189B54AE0069B37D /* DDAGoalTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C2E7235189B54AE0069B37D /* DDAGoalTextField.m */; };
 		6C74A660189713BA0051BEBA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C74A65F189713BA0051BEBA /* Foundation.framework */; };
 		6C74A662189713BA0051BEBA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C74A661189713BA0051BEBA /* CoreGraphics.framework */; };
 		6C74A664189713BA0051BEBA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C74A663189713BA0051BEBA /* UIKit.framework */; };
@@ -39,6 +40,8 @@
 		6C2E722F1898BA440069B37D /* DDAGoalTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDAGoalTableViewCell.m; sourceTree = "<group>"; };
 		6C2E72311899B3B70069B37D /* DDAEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDAEditViewController.h; sourceTree = "<group>"; };
 		6C2E72321899B3B70069B37D /* DDAEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDAEditViewController.m; sourceTree = "<group>"; };
+		6C2E7234189B54AE0069B37D /* DDAGoalTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDAGoalTextField.h; sourceTree = "<group>"; };
+		6C2E7235189B54AE0069B37D /* DDAGoalTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDAGoalTextField.m; sourceTree = "<group>"; };
 		6C74A65C189713BA0051BEBA /* myStatus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = myStatus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C74A65F189713BA0051BEBA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6C74A661189713BA0051BEBA /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -124,6 +127,8 @@
 				6C2E722F1898BA440069B37D /* DDAGoalTableViewCell.m */,
 				6C2E72311899B3B70069B37D /* DDAEditViewController.h */,
 				6C2E72321899B3B70069B37D /* DDAEditViewController.m */,
+				6C2E7234189B54AE0069B37D /* DDAGoalTextField.h */,
+				6C2E7235189B54AE0069B37D /* DDAGoalTextField.m */,
 				6C74A671189713BA0051BEBA /* Images.xcassets */,
 				6C74A666189713BA0051BEBA /* Supporting Files */,
 			);
@@ -257,6 +262,7 @@
 			files = (
 				6C2E72301898BA440069B37D /* DDAGoalTableViewCell.m in Sources */,
 				6C74A670189713BA0051BEBA /* DDAAppDelegate.m in Sources */,
+				6C2E7236189B54AE0069B37D /* DDAGoalTextField.m in Sources */,
 				6C74A6901897147A0051BEBA /* DDAListViewController.m in Sources */,
 				6C2E72331899B3B70069B37D /* DDAEditViewController.m in Sources */,
 				6C74A66C189713BA0051BEBA /* main.m in Sources */,

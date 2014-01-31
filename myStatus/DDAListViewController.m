@@ -9,15 +9,32 @@
 #import "DDAListViewController.h"
 #import "DDAGoalTableViewCell.h"
 #import "DDAEditViewController.h"
+#import "DDAGoalTextField.h"
 
-@interface DDAListViewController () <UITextFieldDelegate>
+@interface DDAListViewController () <UITextFieldDelegate, DDAEditViewControllerDelegate>
 
 @property (nonatomic) NSMutableArray *goals;
 @property (nonatomic) NSMutableArray *accomplishments;
+@property (nonatomic) NSIndexPath *editingIndexPath;
+@property (nonatomic, readonly) DDAGoalTextField *textField;
 
 @end
 
 @implementation DDAListViewController
+
+
+#pragma mark - Accessors
+
+@synthesize textField = _textField;
+
+
+- (DDAGoalTextField *)textField {
+    if (!_textField) {
+        _textField = [[DDAGoalTextField alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 260.0f, 32.0f)];
+        _textField.delegate = self;
+    }
+    return _textField;
+}
 
 
 #pragma mark - UIViewController Methods
@@ -27,19 +44,11 @@
     
     [self.tableView registerClass:[DDAGoalTableViewCell class] forCellReuseIdentifier:@"cell"];
     
-    UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 260.0f, 32.0f)];
-    textField.returnKeyType = UIReturnKeyGo;
-    textField.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1];
-    textField.placeholder = @"Enter a goal to accomplish";
-    self.navigationItem.titleView = textField;
-    
+    self.navigationItem.titleView = self.textField;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"✏️"
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self
                                                                              action:@selector(toggleEdit:)];
-
-    textField.delegate = self;
-    
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSArray *loadedGoals = [userDefaults arrayForKey:@"goals"];
     self.goals = [[NSMutableArray alloc] initWithArray:loadedGoals];
@@ -54,6 +63,8 @@
     [super setEditing:editing animated:animated];
     
     if (editing) {
+        [self.textField resignFirstResponder];
+        
         self.navigationItem.rightBarButtonItem.title = @"✅";
     } else {
         self.navigationItem.rightBarButtonItem.title = @"✏️";
@@ -62,6 +73,11 @@
 
 
 #pragma mark - UITextField Delegate Methods
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    [self setEditing:NO animated:YES];
+}
+
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     NSString *text = [textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -194,12 +210,37 @@
 
 
 - (void) editGoal: (UITapGestureRecognizer *)sender {
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:(UITableViewCell *)sender.view];
+    self.editingIndexPath = [self.tableView indexPathForCell:(UITableViewCell *)sender.view];
     
-    NSLog(@"Edit Goal: %@", [self arrayForSection:indexPath.section][indexPath.row]);
+    NSLog(@"Edit Goal: %@", [self arrayForSection:self.editingIndexPath.section][self.editingIndexPath.row]);
     
     DDAEditViewController *editViewController = [[DDAEditViewController alloc] init];
+    editViewController.delegate = self;
+    editViewController.goal = [self goalForIndexPath:self.editingIndexPath];
     [self.navigationController pushViewController:editViewController animated:YES];
+    [self setEditing:NO animated:YES];
+}
+
+
+- (NSString *)goalForIndexPath:(NSIndexPath *)indexPath {
+    return [self arrayForSection:indexPath.section][indexPath.row];
+}
+
+
+- (void)setGoal:(NSString *)goal forIndexPath:(NSIndexPath *)indexPath {
+    NSMutableArray *array = [self arrayForSection:indexPath.section];
+    array[indexPath.row] = goal;
+    
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    [self save];
+}
+
+
+#pragma mark - DDEEditViewControllerDelegate
+
+- (void)editViewController:(DDAEditViewController *)editViewController didEditGoal:(NSString *)goal {
+    NSLog(@"Edited goal: %@", goal);
+    [self setGoal:goal forIndexPath:self.editingIndexPath];
 }
 
 @end

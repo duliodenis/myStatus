@@ -54,4 +54,10 @@
     self.editGestureRecognizer.enabled = editing;
 }
 
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    CGPoint point = [touch locationInView:self];
+    return CGRectContainsPoint(self.contentView.frame, point);
+}
+
 @end
