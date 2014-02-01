@@ -10,6 +10,6 @@
 
 @property (nonatomic) NSString *goal;
 @property (nonatomic) BOOL completed;
-@property (nonatomic) UITapGestureRecognizer *editGestureRecognizer;
-
+@property (nonatomic, readonly) UITapGestureRecognizer *editGestureRecognizer;
+@property (nonatomic, readonly) UIButton *timeButton;
 @end

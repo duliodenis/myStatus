@@ -14,3 +14,9 @@ An easy to use iOS App to set goals and track accomplishments.
 - delete goals / accomplishments
 - reorder goals in edit mode
 - tap gesture recognizer to invoke edit view in edit mode
+- you can edit goals
+- goals and accomplishments are persistent
+
+#### Support or Contact
+
+Visit [ddApps.co](http://ddapps.co) to see more.
