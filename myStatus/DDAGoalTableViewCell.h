@@ -8,7 +8,7 @@
 
 @interface DDAGoalTableViewCell : UITableViewCell
 
-@property (nonatomic) NSString *goal;
+@property (nonatomic) NSDictionary *goal;
 @property (nonatomic) BOOL completed;
 @property (nonatomic, readonly) UITapGestureRecognizer *editGestureRecognizer;
 @property (nonatomic, readonly) UIButton *timeButton;

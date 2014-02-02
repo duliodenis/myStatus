@@ -17,7 +17,7 @@
 @implementation DDAEditViewController
 
 @synthesize textField = _textField;
-@synthesize goal = _goal;
+@synthesize text = _text;
 
 
 #pragma mark - Accessors
@@ -32,9 +32,9 @@
 }
 
 
-- (void)setGoal:(NSString *)goal {
-    _goal = goal;
-    self.textField.text = goal;
+- (void)setText:(NSString *)text {
+    _text = text;
+    self.textField.text = text;
 }
 
 
@@ -86,8 +86,8 @@
 #pragma mark - Actions
 
 - (void)save:(id)sender {
-    if ([self.delegate respondsToSelector:@selector(editViewController:didEditGoal:)]) {
-        [self.delegate editViewController:self didEditGoal:self.textField.text];
+    if ([self.delegate respondsToSelector:@selector(editViewController:didEditText:)]) {
+        [self.delegate editViewController:self didEditText:self.textField.text];
     }
     [self.navigationController popToRootViewControllerAnimated:YES];
 }

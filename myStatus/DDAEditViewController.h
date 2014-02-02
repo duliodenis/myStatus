@@ -12,7 +12,7 @@
 
 @optional
 
-- (void)editViewController:(DDAEditViewController *)editViewController didEditGoal:(NSString *)goal;
+- (void)editViewController:(DDAEditViewController *)editViewController didEditText:(NSString *)text;
 
 @end
 
@@ -20,6 +20,6 @@
 @interface DDAEditViewController : UIViewController
 
 @property (nonatomic, weak) id<DDAEditViewControllerDelegate> delegate;
-@property (nonatomic) NSString *goal;
+@property (nonatomic) NSString *text;
 
 @end

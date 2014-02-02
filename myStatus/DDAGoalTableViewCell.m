@@ -22,7 +22,7 @@
     if (!_timeButton) {
         _timeButton = [[UIButton alloc] init];
         // _timeButton.backgroundColor = [UIColor redColor];
-        [_timeButton setTitle:@"10m" forState:UIControlStateNormal];
+        [_timeButton setTitle:@"🕗" forState:UIControlStateNormal];
         [_timeButton setTitleColor:[UIColor colorWithWhite:0.8f alpha:1.0f] forState:UIControlStateNormal];
         [_timeButton setTitleColor:[UIColor colorWithWhite:0.5f alpha:1.0f] forState:UIControlStateHighlighted];
         _timeButton.titleLabel.font = [UIFont systemFontOfSize:14.0f];
@@ -33,10 +33,10 @@
 
 #pragma mark - Instance Variables Setters
 
-- (void)setGoal:(NSString *)goal {
+- (void)setGoal:(NSDictionary *)goal {
     _goal = goal;
     
-    self.textLabel.text = goal;
+    self.textLabel.text = goal[@"text"];
 }
 
 
@@ -97,6 +97,7 @@
     [super setEditing:editing animated:animated];
     
     self.editGestureRecognizer.enabled = editing;
+    self.timeButton.alpha = editing ? 0.0f : 1.0f;
 }
 
 

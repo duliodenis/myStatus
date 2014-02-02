@@ -10,6 +10,7 @@
 #import "DDAGoalTableViewCell.h"
 #import "DDAEditViewController.h"
 #import "DDAGoalTextField.h"
+#import "DDAEditTimeViewController.h"
 
 @interface DDAListViewController () <UITextFieldDelegate, DDAEditViewControllerDelegate>
 
@@ -87,7 +88,11 @@
         return NO;
     }
     
-    [self.goals insertObject:text atIndex:0];
+    NSDictionary *goal = @{
+        @"text": textField.text
+    };
+    
+    [self.goals insertObject:goal atIndex:0];
 
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationTop];
@@ -109,8 +114,10 @@
     DDAGoalTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     
     [cell.editGestureRecognizer addTarget:self action:@selector(editGoal:)];
+    [cell.timeButton addTarget:self action:@selector(time:withEvent:) forControlEvents:UIControlEventTouchUpInside];
     
-    cell.goal = [self arrayForSection:indexPath.section][indexPath.row];
+    // cell.goal = [self arrayForSection:indexPath.section][indexPath.row];
+    cell.goal = [self goalForIndexPath:indexPath];
     cell.completed = indexPath.section == 1;
     
     return cell;
@@ -216,18 +223,34 @@
     
     DDAEditViewController *editViewController = [[DDAEditViewController alloc] init];
     editViewController.delegate = self;
-    editViewController.goal = [self goalForIndexPath:self.editingIndexPath];
+    editViewController.text = [self goalForIndexPath:self.editingIndexPath][@"text"];
     [self.navigationController pushViewController:editViewController animated:YES];
     [self setEditing:NO animated:YES];
 }
 
 
-- (NSString *)goalForIndexPath:(NSIndexPath *)indexPath {
+- (void)time:(id)sender withEvent:(UIEvent *)event {
+    UITouch *touch = [[event allTouches] anyObject];
+    [touch locationInView:self.tableView];
+    CGPoint point = [touch locationInView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:point];
+    
+    NSDictionary *goal = [self goalForIndexPath:indexPath];
+    NSLog(@"Goal: %@", goal);
+    
+    DDAEditTimeViewController *editTimeViewController = [[DDAEditTimeViewController alloc] init];
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editTimeViewController];
+    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+}
+
+
+- (NSDictionary *)goalForIndexPath:(NSIndexPath *)indexPath {
     return [self arrayForSection:indexPath.section][indexPath.row];
 }
 
 
-- (void)setGoal:(NSString *)goal forIndexPath:(NSIndexPath *)indexPath {
+- (void)setGoal:(NSDictionary *)goal forIndexPath:(NSIndexPath *)indexPath {
     NSMutableArray *array = [self arrayForSection:indexPath.section];
     array[indexPath.row] = goal;
     
@@ -238,8 +261,12 @@
 
 #pragma mark - DDEEditViewControllerDelegate
 
-- (void)editViewController:(DDAEditViewController *)editViewController didEditGoal:(NSString *)goal {
-    NSLog(@"Edited goal: %@", goal);
+- (void)editViewController:(DDAEditViewController *)editViewController didEditText:(NSString *)text {
+//    NSLog(@"Edited goal: %@", goal);
+//    [self setGoal:goal forIndexPath:self.editingIndexPath];
+    NSMutableDictionary *goal = [[self goalForIndexPath:self.editingIndexPath] mutableCopy];
+    goal[@"text"] = text;
+    
     [self setGoal:goal forIndexPath:self.editingIndexPath];
 }
 
