@@ -10,6 +10,7 @@
 
 @property (nonatomic) NSDictionary *goal;
 @property (nonatomic) BOOL completed;
+@property (nonatomic) BOOL timing;
 @property (nonatomic, readonly) UITapGestureRecognizer *editGestureRecognizer;
 @property (nonatomic, readonly) UIButton *timeButton;
 @end

@@ -10,14 +10,15 @@
 #import "DDAGoalTableViewCell.h"
 #import "DDAEditViewController.h"
 #import "DDAGoalTextField.h"
-#import "DDAEditTimeViewController.h"
+#import "DDADurationPickerViewController.h"
 
-@interface DDAListViewController () <UITextFieldDelegate, DDAEditViewControllerDelegate>
+@interface DDAListViewController () <UITextFieldDelegate, DDAEditViewControllerDelegate, DDADurationPickerViewControllerDelegate>
 
 @property (nonatomic) NSMutableArray *goals;
 @property (nonatomic) NSMutableArray *accomplishments;
 @property (nonatomic) NSIndexPath *editingIndexPath;
 @property (nonatomic, readonly) DDAGoalTextField *textField;
+@property (nonatomic) NSTimer *timer;
 
 @end
 
@@ -27,6 +28,7 @@
 #pragma mark - Accessors
 
 @synthesize textField = _textField;
+@synthesize timer = _timer;
 
 
 - (DDAGoalTextField *)textField {
@@ -35,6 +37,15 @@
         _textField.delegate = self;
     }
     return _textField;
+}
+
+
+- (void)setTimer:(NSTimer *)timer {
+    if (_timer != timer) { // pointer comparison
+        [_timer invalidate];
+    }
+    
+    _timer = timer;
 }
 
 
@@ -233,12 +244,14 @@
     UITouch *touch = [[event allTouches] anyObject];
     [touch locationInView:self.tableView];
     CGPoint point = [touch locationInView:self.tableView];
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:point];
+    self.editingIndexPath = [self.tableView indexPathForRowAtPoint:point];
     
-    NSDictionary *goal = [self goalForIndexPath:indexPath];
+    NSDictionary *goal = [self goalForIndexPath:self.editingIndexPath];
     NSLog(@"Goal: %@", goal);
     
-    DDAEditTimeViewController *editTimeViewController = [[DDAEditTimeViewController alloc] init];
+    DDADurationPickerViewController *editTimeViewController = [[DDADurationPickerViewController alloc] init];
+    editTimeViewController.delegate = self;
+    editTimeViewController.duration = [goal[@"timeRemaining"] doubleValue];
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editTimeViewController];
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
@@ -266,6 +279,17 @@
 //    [self setGoal:goal forIndexPath:self.editingIndexPath];
     NSMutableDictionary *goal = [[self goalForIndexPath:self.editingIndexPath] mutableCopy];
     goal[@"text"] = text;
+    
+    [self setGoal:goal forIndexPath:self.editingIndexPath];
+}
+
+
+#pragma mark - DDADurationPickerViewController Delegate
+
+- (void)durationPickerViewController:(DDADurationPickerViewController *)editTimeViewController
+               didPickDuration:(NSTimeInterval)duration {
+    NSMutableDictionary *goal = [[self goalForIndexPath:self.editingIndexPath] mutableCopy];
+    goal[@"timeRemaining"] = @(duration);
     
     [self setGoal:goal forIndexPath:self.editingIndexPath];
 }

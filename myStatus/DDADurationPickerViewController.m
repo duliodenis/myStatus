@@ -1,20 +1,21 @@
 //
-//  DDAEditTimeViewController.m
+//  DDADurationPickerViewController.m
 //  myStatus
 //
-//  Created by Dulio Denis on 2/1/14.
+//  Created by Dulio Denis on 2/2/14.
 //  Copyright (c) 2014 ddApps. All rights reserved.
 //
 
-#import "DDAEditTimeViewController.h"
+#import "DDADurationPickerViewController.h"
 
-@interface DDAEditTimeViewController ()
+@interface DDADurationPickerViewController ()
 @property (nonatomic, readonly) UIDatePicker *datePicker;
 @end
 
-@implementation DDAEditTimeViewController
+@implementation DDADurationPickerViewController
 
 @synthesize datePicker = _datePicker;
+@synthesize duration = _duration;
 
 
 #pragma mark - DatePicker Accessor
@@ -26,6 +27,13 @@
     }
     return _datePicker;
 }
+
+
+- (void)setDuration:(NSTimeInterval)duration {
+    _duration = duration;
+    self.datePicker.countDownDuration = _duration;
+}
+
 
 #pragma mark - UIViewController 
 
@@ -64,6 +72,9 @@
 
 
 - (void)done:(id)sender {
+    if ([self.delegate respondsToSelector:@selector(durationPickerViewController:didPickDuration:)]) {
+        [self.delegate durationPickerViewController:self didPickDuration:self.datePicker.countDownDuration];
+    }
     [self cancel:sender];
 }
 

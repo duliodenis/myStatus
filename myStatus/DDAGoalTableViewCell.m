@@ -14,6 +14,7 @@
 @synthesize completed = _completed;
 @synthesize editGestureRecognizer = _editGestureRecognizer;
 @synthesize timeButton = _timeButton;
+@synthesize timing = _timing;
 
 
 #pragma mark - timeButton Getter
@@ -22,9 +23,6 @@
     if (!_timeButton) {
         _timeButton = [[UIButton alloc] init];
         // _timeButton.backgroundColor = [UIColor redColor];
-        [_timeButton setTitle:@"🕗" forState:UIControlStateNormal];
-        [_timeButton setTitleColor:[UIColor colorWithWhite:0.8f alpha:1.0f] forState:UIControlStateNormal];
-        [_timeButton setTitleColor:[UIColor colorWithWhite:0.5f alpha:1.0f] forState:UIControlStateHighlighted];
         _timeButton.titleLabel.font = [UIFont systemFontOfSize:14.0f];
     }
     return _timeButton;
@@ -37,6 +35,8 @@
     _goal = goal;
     
     self.textLabel.text = goal[@"text"];
+    
+    [self updateTimeButton];
 }
 
 
@@ -50,6 +50,13 @@
     } else {
         self.textLabel.textColor = [UIColor blackColor];
     }
+}
+
+
+- (void)setTiming:(BOOL)timing {
+    _timing = timing;
+    
+    [self updateTimeButton];
 }
 
 
@@ -91,13 +98,45 @@
 }
 
 
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    
+    self.goal = nil;
+    self.timing = NO;
+}
+
+
 #pragma mark - setEditing on UITableViewCell
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
     [super setEditing:editing animated:animated];
     
     self.editGestureRecognizer.enabled = editing;
-    self.timeButton.alpha = editing ? 0.0f : 1.0f;
+    // self.timeButton.alpha = editing ? 0.0f : 1.0f; // Leave the time button on during editing
+}
+
+
+#pragma mark - Private
+
+- (void)updateTimeButton {
+    NSNumber *timeRemaining = self.goal[@"timeRemaining"];
+    if (!timeRemaining) {
+        [self.timeButton setTitle:@"🕗" forState:UIControlStateNormal];
+    } else {
+        NSString *time = [NSString stringWithFormat:@"%i", [timeRemaining integerValue]];
+        [self.timeButton setTitle:time forState:UIControlStateNormal];
+    }
+    
+    UIColor *color;
+    if (self.timing) {
+        color = [timeRemaining integerValue] >= 0 ? [UIColor greenColor] : [UIColor redColor];
+    } else {
+        color = [UIColor colorWithWhite:0.8f alpha:1.0f];
+       // [_timeButton setTitleColor:[UIColor colorWithWhite:0.5f alpha:1.0f] forState:UIControlStateHighlighted];
+    }
+    
+    [self.timeButton setTitleColor:color forState:UIControlStateNormal];
+    [self.timeButton setTitleColor:[color colorWithAlphaComponent:0.5f] forState:UIControlStateHighlighted];
 }
 
 
