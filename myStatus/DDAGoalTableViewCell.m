@@ -14,7 +14,6 @@
 @synthesize completed = _completed;
 @synthesize editGestureRecognizer = _editGestureRecognizer;
 @synthesize timeButton = _timeButton;
-@synthesize timing = _timing;
 
 
 #pragma mark - timeButton Getter
@@ -50,13 +49,6 @@
     } else {
         self.textLabel.textColor = [UIColor blackColor];
     }
-}
-
-
-- (void)setTiming:(BOOL)timing {
-    _timing = timing;
-    
-    [self updateTimeButton];
 }
 
 
@@ -102,7 +94,6 @@
     [super prepareForReuse];
     
     self.goal = nil;
-    self.timing = NO;
 }
 
 
@@ -122,19 +113,25 @@
     NSNumber *timeRemaining = self.goal[@"timeRemaining"];
     if (!timeRemaining) {
         [self.timeButton setTitle:@"🕗" forState:UIControlStateNormal];
-    } else {
-        NSString *time = [NSString stringWithFormat:@"%i", [timeRemaining integerValue]];
-        [self.timeButton setTitle:time forState:UIControlStateNormal];
+        return;
     }
-    
+
     UIColor *color;
-    if (self.timing) {
-        color = [timeRemaining integerValue] >= 0 ? [UIColor greenColor] : [UIColor redColor];
+    NSTimeInterval seconds = [self.goal[@"timeRemaining"] doubleValue];
+    
+    if (self.goal[@"startedTimingAt"]) {
+        NSDate *startedTimingAt = self.goal[@"startedTimingAt"];
+        NSTimeInterval difference = [[NSDate date] timeIntervalSinceDate:startedTimingAt];
+        seconds -= difference;
+        
+        color = seconds >= 0 ? [UIColor greenColor] : [UIColor redColor];
     } else {
         color = [UIColor colorWithWhite:0.8f alpha:1.0f];
        // [_timeButton setTitleColor:[UIColor colorWithWhite:0.5f alpha:1.0f] forState:UIControlStateHighlighted];
     }
     
+    NSString *time = [NSString stringWithFormat:@"%i", (NSInteger)seconds];
+    [self.timeButton setTitle:time forState:UIControlStateNormal];
     [self.timeButton setTitleColor:color forState:UIControlStateNormal];
     [self.timeButton setTitleColor:[color colorWithAlphaComponent:0.5f] forState:UIControlStateHighlighted];
 }

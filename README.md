@@ -1,3 +1,6 @@
+
+![alt text](https://raw.github.com/duliodenis/myStatus/master/myStatus/Images.xcassets/AppIcon.appiconset/myStatus%2080%20x%2080.png "Status Logo")
+
 ### myStatus
 
 An easy to use iOS App to set goals and track accomplishments.

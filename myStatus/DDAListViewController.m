@@ -19,6 +19,7 @@
 @property (nonatomic) NSIndexPath *editingIndexPath;
 @property (nonatomic, readonly) DDAGoalTextField *textField;
 @property (nonatomic) NSTimer *timer;
+@property (nonatomic) NSIndexPath *tickingIndexPath;
 
 @end
 
@@ -46,6 +47,8 @@
     }
     
     _timer = timer;
+    
+    [[UIApplication sharedApplication] setIdleTimerDisabled:_timer != nil];
 }
 
 
@@ -64,6 +67,14 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSArray *loadedGoals = [userDefaults arrayForKey:@"goals"];
     self.goals = [[NSMutableArray alloc] initWithArray:loadedGoals];
+    
+    for (NSInteger i = 0; i < self.goals.count; i++) {
+        NSDictionary *goal = self.goals[i];
+        
+        if (goal[@"startedTimingAt"]) {
+            [self startTimingIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+        }
+    }
     
     NSArray *loadedAccomplishments = [userDefaults arrayForKey:@"accomplishments"];
     self.accomplishments = [[NSMutableArray alloc] initWithArray:loadedAccomplishments];
@@ -244,11 +255,33 @@
     UITouch *touch = [[event allTouches] anyObject];
     [touch locationInView:self.tableView];
     CGPoint point = [touch locationInView:self.tableView];
-    self.editingIndexPath = [self.tableView indexPathForRowAtPoint:point];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:point];
+
+    NSDictionary *goal = [self goalForIndexPath:indexPath];
+    NSNumber *timeRemaining = goal[@"timeRemaining"];
     
-    NSDictionary *goal = [self goalForIndexPath:self.editingIndexPath];
-    NSLog(@"Goal: %@", goal);
+    // Goal has timer, tick.
+    if (timeRemaining) {
+        // Already ticking. Stop.
+        if ([indexPath isEqual:self.tickingIndexPath]) {
+            [self stopTimingIndexPath:indexPath];
+        }
+        
+        // Start ticking.
+        else {
+            if (self.tickingIndexPath) {
+                [self stopTimingIndexPath:indexPath];
+            }
+            
+            [self setGoalValue:[NSDate date] forKey:@"startedTimingAt" atIndexPath:indexPath];
+            [self startTimingIndexPath:indexPath];
+        }
+        
+        return;
+    }
     
+    // Goal does not have time - so allow picking
+    self.editingIndexPath = indexPath;
     DDADurationPickerViewController *editTimeViewController = [[DDADurationPickerViewController alloc] init];
     editTimeViewController.delegate = self;
     editTimeViewController.duration = [goal[@"timeRemaining"] doubleValue];
@@ -257,6 +290,14 @@
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
+
+- (void)tick:(id)sender {
+    if (!self.tickingIndexPath) {
+        return;
+    }
+    
+    [self.tableView reloadRowsAtIndexPaths:@[self.tickingIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+}
 
 - (NSDictionary *)goalForIndexPath:(NSIndexPath *)indexPath {
     return [self arrayForSection:indexPath.section][indexPath.row];
@@ -272,15 +313,51 @@
 }
 
 
+- (void)setGoalValue:(id)value forKey:(NSString *)key atIndexPath:(NSIndexPath *)indexPath {
+    NSMutableDictionary *goal = [[self goalForIndexPath:indexPath] mutableCopy];
+    goal[key] = value;
+    
+    [self setGoal:goal forIndexPath:indexPath];
+}
+
+
+- (void)startTimingIndexPath:(NSIndexPath *)indexPath {
+    self.tickingIndexPath = indexPath;
+    self.timer = [NSTimer timerWithTimeInterval:1
+                                         target:self
+                                       selector:@selector(tick:)
+                                       userInfo:nil
+                                        repeats:YES];
+    [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+}
+
+
+- (void)stopTimingIndexPath:(NSIndexPath *)indexPath {
+    NSDictionary *goal = [self goalForIndexPath:indexPath];
+    NSDate *startedTimingAt = goal[@"startedTimingAt"];
+    NSTimeInterval difference = [[NSDate date] timeIntervalSinceDate:startedTimingAt];
+    NSTimeInterval timeRemaining = [goal[@"timeRemaining"] doubleValue];
+    
+    NSMutableDictionary *saved = [goal mutableCopy];
+    saved[@"timeRemaining"] = @(timeRemaining - difference);
+    [saved removeObjectForKey:@"startedTimingAt"];
+    [self setGoal:saved forIndexPath:indexPath];
+    //            [self setGoalValue:@(timeRemaining - difference) forKey:@"timeRemaining" atIndexPath:indexPath];
+    
+    self.timer = nil;
+    self.tickingIndexPath = nil;
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+}
+
+
 #pragma mark - DDEEditViewControllerDelegate
 
 - (void)editViewController:(DDAEditViewController *)editViewController didEditText:(NSString *)text {
 //    NSLog(@"Edited goal: %@", goal);
 //    [self setGoal:goal forIndexPath:self.editingIndexPath];
-    NSMutableDictionary *goal = [[self goalForIndexPath:self.editingIndexPath] mutableCopy];
-    goal[@"text"] = text;
-    
-    [self setGoal:goal forIndexPath:self.editingIndexPath];
+    [self setGoalValue:text forKey:@"text" atIndexPath:self.editingIndexPath];
 }
 
 
@@ -288,10 +365,7 @@
 
 - (void)durationPickerViewController:(DDADurationPickerViewController *)editTimeViewController
                didPickDuration:(NSTimeInterval)duration {
-    NSMutableDictionary *goal = [[self goalForIndexPath:self.editingIndexPath] mutableCopy];
-    goal[@"timeRemaining"] = @(duration);
-    
-    [self setGoal:goal forIndexPath:self.editingIndexPath];
+    [self setGoalValue:@(duration) forKey:@"timeRemaining" atIndexPath:self.editingIndexPath];
 }
 
 @end
