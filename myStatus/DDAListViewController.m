@@ -12,6 +12,8 @@
 #import "DDAGoalTextField.h"
 #import "DDADurationPickerViewController.h"
 
+#import <SAMGradientView/SAMGradientView.h>
+
 @interface DDAListViewController () <UITextFieldDelegate, DDAEditViewControllerDelegate, DDADurationPickerViewControllerDelegate>
 
 @property (nonatomic) NSMutableArray *goals;
@@ -58,6 +60,11 @@
     [super viewDidLoad];
     
     [self.tableView registerClass:[DDAGoalTableViewCell class] forCellReuseIdentifier:@"cell"];
+    
+    SAMGradientView *gradientView = [[SAMGradientView alloc] init];
+    gradientView.gradientColors = @[[UIColor colorWithRed:0.059 green:0.416 blue:0.698 alpha:1],
+                                    [UIColor colorWithRed:0.976 green:0.675 blue:0.247 alpha:1]];
+    self.tableView.backgroundView = gradientView;
     
     self.navigationItem.titleView = self.textField;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"✏️"

@@ -85,6 +85,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         [self.contentView addSubview:self.timeButton];
+        self.backgroundColor = [UIColor clearColor];        
     }
     return self;
 }
