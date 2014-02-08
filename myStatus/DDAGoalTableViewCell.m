@@ -45,9 +45,9 @@
     self.timeButton.hidden = _completed;
     
     if (_completed) {
-        self.textLabel.textColor = [UIColor lightGrayColor];
+        self.textLabel.textColor = [UIColor colorWithWhite:1.0f alpha:0.3f];
     } else {
-        self.textLabel.textColor = [UIColor blackColor];
+        self.textLabel.textColor = [UIColor whiteColor];
     }
 }
 
@@ -85,7 +85,9 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         [self.contentView addSubview:self.timeButton];
-        self.backgroundColor = [UIColor clearColor];        
+        self.backgroundColor = [UIColor clearColor];
+        
+        self.textLabel.font = [UIFont fontWithName:@"Avenir" size:20.f];
     }
     return self;
 }

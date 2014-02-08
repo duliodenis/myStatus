@@ -25,6 +25,7 @@
 		6C74A683189713BA0051BEBA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6C74A681189713BA0051BEBA /* InfoPlist.strings */; };
 		6C74A685189713BA0051BEBA /* myStatusTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C74A684189713BA0051BEBA /* myStatusTests.m */; };
 		6C74A6901897147A0051BEBA /* DDAListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C74A68F1897147A0051BEBA /* DDAListViewController.m */; };
+		6CAE747018A58A1400C694F8 /* UIColor+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CAE746F18A58A1400C694F8 /* UIColor+Extensions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,8 @@
 		6C74A684189713BA0051BEBA /* myStatusTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = myStatusTests.m; sourceTree = "<group>"; };
 		6C74A68E1897147A0051BEBA /* DDAListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDAListViewController.h; sourceTree = "<group>"; };
 		6C74A68F1897147A0051BEBA /* DDAListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDAListViewController.m; sourceTree = "<group>"; };
+		6CAE746E18A58A1400C694F8 /* UIColor+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Extensions.h"; sourceTree = "<group>"; };
+		6CAE746F18A58A1400C694F8 /* UIColor+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Extensions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +114,8 @@
 			children = (
 				6C74A66E189713BA0051BEBA /* DDAAppDelegate.h */,
 				6C74A66F189713BA0051BEBA /* DDAAppDelegate.m */,
+				6CAE746E18A58A1400C694F8 /* UIColor+Extensions.h */,
+				6CAE746F18A58A1400C694F8 /* UIColor+Extensions.m */,
 			);
 			name = Application;
 			sourceTree = "<group>";
@@ -337,6 +342,7 @@
 				6C2E7239189DB1EB0069B37D /* DDADurationPickerViewController.m in Sources */,
 				6C2E72331899B3B70069B37D /* DDAEditViewController.m in Sources */,
 				6C74A66C189713BA0051BEBA /* main.m in Sources */,
+				6CAE747018A58A1400C694F8 /* UIColor+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

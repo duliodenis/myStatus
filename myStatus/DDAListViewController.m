@@ -11,6 +11,7 @@
 #import "DDAEditViewController.h"
 #import "DDAGoalTextField.h"
 #import "DDADurationPickerViewController.h"
+#import "UIColor+Extensions.h"
 
 #import <SAMGradientView/SAMGradientView.h>
 
@@ -62,9 +63,12 @@
     [self.tableView registerClass:[DDAGoalTableViewCell class] forCellReuseIdentifier:@"cell"];
     
     SAMGradientView *gradientView = [[SAMGradientView alloc] init];
-    gradientView.gradientColors = @[[UIColor colorWithRed:0.059 green:0.416 blue:0.698 alpha:1],
-                                    [UIColor colorWithRed:0.976 green:0.675 blue:0.247 alpha:1]];
+    gradientView.gradientColors = @[[UIColor DDABlue],
+                                    [UIColor DDAOrange]];
     self.tableView.backgroundView = gradientView;
+    self.tableView.separatorColor = [UIColor DDAPaleWhite];
+    self.tableView.separatorInset = UIEdgeInsetsZero;
+    self.tableView.rowHeight = 60.0f;
     
     self.navigationItem.titleView = self.textField;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"✏️"
@@ -99,6 +103,11 @@
     } else {
         self.navigationItem.rightBarButtonItem.title = @"✏️";
     }
+}
+
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
 }
 
 
