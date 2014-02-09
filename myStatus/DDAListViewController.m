@@ -12,6 +12,7 @@
 #import "DDAGoalTextField.h"
 #import "DDADurationPickerViewController.h"
 #import "UIColor+Extensions.h"
+#import "DDATimeButton.h"
 
 #import <SAMGradientView/SAMGradientView.h>
 
@@ -83,6 +84,11 @@
     NSArray *loadedGoals = [userDefaults arrayForKey:@"goals"];
     self.goals = [[NSMutableArray alloc] initWithArray:loadedGoals];
     
+    NSArray *loadedAccomplishments = [userDefaults arrayForKey:@"accomplishments"];
+    self.accomplishments = [[NSMutableArray alloc] initWithArray:loadedAccomplishments];
+    
+    [self.tableView reloadData];
+    
     for (NSInteger i = 0; i < self.goals.count; i++) {
         NSDictionary *goal = self.goals[i];
         
@@ -90,10 +96,6 @@
             [self startTimingIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
         }
     }
-    
-    NSArray *loadedAccomplishments = [userDefaults arrayForKey:@"accomplishments"];
-    self.accomplishments = [[NSMutableArray alloc] initWithArray:loadedAccomplishments];
-    
 }
 
 
@@ -316,7 +318,7 @@
         return;
     }
     
-    [self.tableView reloadRowsAtIndexPaths:@[self.tickingIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView reloadRowsAtIndexPaths:@[self.tickingIndexPath] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 - (NSDictionary *)goalForIndexPath:(NSIndexPath *)indexPath {

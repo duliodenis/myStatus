@@ -7,6 +7,8 @@
 //
 
 #import "DDADurationPickerViewController.h"
+#import <SAMGradientView/SAMGradientView.h>
+#import "UIColor+Extensions.h"
 
 @interface DDADurationPickerViewController ()
 @property (nonatomic, readonly) UIDatePicker *datePicker;
@@ -24,6 +26,8 @@
     if (!_datePicker) {
         _datePicker = [[UIDatePicker alloc] init];
         _datePicker.datePickerMode = UIDatePickerModeCountDownTimer;
+        _datePicker.tintColor = [UIColor whiteColor];
+        _datePicker.backgroundColor = [UIColor DDAPaleWhite];
     }
     return _datePicker;
 }
@@ -41,12 +45,20 @@
     [super viewDidLoad];
     self.title = @"Time";
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    SAMGradientView *gradientView = [[SAMGradientView alloc] initWithFrame:self.view.bounds];
+    gradientView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    gradientView.gradientColors = @[[UIColor DDABlue],
+                                    [UIColor DDAOrange]];
+    [self.view addSubview:gradientView];
+    
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done:)];
     
     UILabel *instructions = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, self.topLayoutGuide.length, 280.0f, 200.0f)];
     instructions.text = @"Pick a time duration for your goal.";
     instructions.textAlignment = NSTextAlignmentCenter;
+    instructions.textColor = [UIColor whiteColor];
     
     [self.view addSubview:instructions];
     [self.view addSubview:self.datePicker];

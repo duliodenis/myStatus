@@ -6,12 +6,11 @@
 //  Copyright (c) 2014 ddApps. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
 @interface UIColor (Extensions)
 
 + (UIColor *)DDAOrange;
 + (UIColor *)DDABlue;
++ (UIColor *)DDAGreen;
 + (UIColor *)DDAPaleWhite;
 
 @end

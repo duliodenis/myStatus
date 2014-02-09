@@ -7,6 +7,7 @@
 //
 
 #import "DDAGoalTableViewCell.h"
+#import "DDATimeButton.h"
 
 @implementation DDAGoalTableViewCell
 
@@ -18,11 +19,11 @@
 
 #pragma mark - timeButton Getter
 
-- (UIButton *)timeButton {
+- (DDATimeButton *)timeButton {
     if (!_timeButton) {
-        _timeButton = [[UIButton alloc] init];
+        _timeButton = [[DDATimeButton alloc] init];
         // _timeButton.backgroundColor = [UIColor redColor];
-        _timeButton.titleLabel.font = [UIFont systemFontOfSize:14.0f];
+        // _timeButton.titleLabel.font = [UIFont systemFontOfSize:14.0f];
     }
     return _timeButton;
 }
@@ -113,30 +114,29 @@
 #pragma mark - Private
 
 - (void)updateTimeButton {
+    // Check if we are ticking.
+    self.timeButton.ticking = self.goal[@"startedTimingAt"] != nil;
+    
+    // If there's no time set then set the time to nil and ticking to false and return
     NSNumber *timeRemaining = self.goal[@"timeRemaining"];
     if (!timeRemaining) {
-        [self.timeButton setTitle:@"🕗" forState:UIControlStateNormal];
+        self.timeButton.time = nil;
+        self.timeButton.ticking = NO;
         return;
     }
 
-    UIColor *color;
+    // Get the time
     NSTimeInterval seconds = [self.goal[@"timeRemaining"] doubleValue];
-    
-    if (self.goal[@"startedTimingAt"]) {
+
+    // Offset the time if necessary
+    if (self.timeButton.ticking) {
         NSDate *startedTimingAt = self.goal[@"startedTimingAt"];
         NSTimeInterval difference = [[NSDate date] timeIntervalSinceDate:startedTimingAt];
         seconds -= difference;
-        
-        color = seconds >= 0 ? [UIColor greenColor] : [UIColor redColor];
-    } else {
-        color = [UIColor colorWithWhite:0.8f alpha:1.0f];
-       // [_timeButton setTitleColor:[UIColor colorWithWhite:0.5f alpha:1.0f] forState:UIControlStateHighlighted];
     }
     
-    NSString *time = [NSString stringWithFormat:@"%i", (NSInteger)seconds];
-    [self.timeButton setTitle:time forState:UIControlStateNormal];
-    [self.timeButton setTitleColor:color forState:UIControlStateNormal];
-    [self.timeButton setTitleColor:[color colorWithAlphaComponent:0.5f] forState:UIControlStateHighlighted];
+    // Set the time
+    self.timeButton.time = @(seconds);
 }
 
 

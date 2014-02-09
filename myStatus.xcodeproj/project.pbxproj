@@ -26,6 +26,7 @@
 		6C74A685189713BA0051BEBA /* myStatusTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C74A684189713BA0051BEBA /* myStatusTests.m */; };
 		6C74A6901897147A0051BEBA /* DDAListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C74A68F1897147A0051BEBA /* DDAListViewController.m */; };
 		6CAE747018A58A1400C694F8 /* UIColor+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CAE746F18A58A1400C694F8 /* UIColor+Extensions.m */; };
+		6CAE747318A7FD6D00C694F8 /* DDATimeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CAE747218A7FD6D00C694F8 /* DDATimeButton.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,8 @@
 		6C74A68F1897147A0051BEBA /* DDAListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDAListViewController.m; sourceTree = "<group>"; };
 		6CAE746E18A58A1400C694F8 /* UIColor+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Extensions.h"; sourceTree = "<group>"; };
 		6CAE746F18A58A1400C694F8 /* UIColor+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Extensions.m"; sourceTree = "<group>"; };
+		6CAE747118A7FD6D00C694F8 /* DDATimeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDATimeButton.h; sourceTree = "<group>"; };
+		6CAE747218A7FD6D00C694F8 /* DDATimeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDATimeButton.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +130,8 @@
 				6C2E722F1898BA440069B37D /* DDAGoalTableViewCell.m */,
 				6C2E7234189B54AE0069B37D /* DDAGoalTextField.h */,
 				6C2E7235189B54AE0069B37D /* DDAGoalTextField.m */,
+				6CAE747118A7FD6D00C694F8 /* DDATimeButton.h */,
+				6CAE747218A7FD6D00C694F8 /* DDATimeButton.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -343,6 +348,7 @@
 				6C2E72331899B3B70069B37D /* DDAEditViewController.m in Sources */,
 				6C74A66C189713BA0051BEBA /* main.m in Sources */,
 				6CAE747018A58A1400C694F8 /* UIColor+Extensions.m in Sources */,
+				6CAE747318A7FD6D00C694F8 /* DDATimeButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
