@@ -8,6 +8,8 @@
 
 #import "DDAEditViewController.h"
 #import "DDAGoalTextField.h"
+#import <SAMGradientView/SAMGradientView.h>
+#import "UIColor+Extensions.h"
 
 @interface DDAEditViewController () <UITextFieldDelegate>
 @property (nonatomic, readonly) DDAGoalTextField *textField;
@@ -45,6 +47,13 @@
     
     self.title = @"Edit Goal";
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    SAMGradientView *gradientView = [[SAMGradientView alloc] initWithFrame:self.view.bounds];
+    gradientView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    gradientView.gradientColors = @[[UIColor DDABlue],
+                                    [UIColor DDAOrange]];
+    [self.view addSubview:gradientView];
+    
     [self.view addSubview:self.textField];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save:)];
@@ -63,7 +72,7 @@
     [super viewDidLayoutSubviews];
     
     CGSize size = self.view.bounds.size;
-    self.textField.frame = CGRectMake(10.0f, roundf((size.height - self.keyboardFrame.size.height + self.topLayoutGuide.length - 44.0f) / 2), size.width -20.0f, 44.0f);
+    self.textField.frame = CGRectMake(0.0f, roundf((size.height - self.keyboardFrame.size.height + self.topLayoutGuide.length - 60.0f) / 2), size.width, 60.0f);
 }
 
 

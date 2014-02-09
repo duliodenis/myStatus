@@ -22,8 +22,16 @@
     UINavigationBar* navigationBar = [UINavigationBar appearance];
     navigationBar.barTintColor = [UIColor DDABlue];
     navigationBar.tintColor = [UIColor whiteColor];
-    navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],
-                                          NSFontAttributeName: [UIFont fontWithName:@"Avenir-Heavy" size:20.0f]};    
+    
+    NSDictionary *heavyTitleAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],
+                                      NSFontAttributeName: [UIFont fontWithName:@"Avenir-Heavy" size:20.0f]};
+    NSDictionary *lightTitleAttributes = @{NSForegroundColorAttributeName: [UIColor DDAPaleWhite],
+                                           NSFontAttributeName: [UIFont fontWithName:@"Avenir" size:16.0f]};
+    
+    navigationBar.titleTextAttributes = heavyTitleAttributes;
+    
+    UIBarButtonItem *barButtonItem = [UIBarButtonItem appearance];
+    [barButtonItem setTitleTextAttributes:lightTitleAttributes forState:UIControlStateNormal];
     
     UIViewController *listViewController = [[DDAListViewController alloc] init];
     UINavigationController *navigationController = [[UINavigationController alloc]

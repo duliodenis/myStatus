@@ -37,7 +37,7 @@
 
 - (DDAGoalTextField *)textField {
     if (!_textField) {
-        _textField = [[DDAGoalTextField alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 260.0f, 32.0f)];
+        _textField = [[DDAGoalTextField alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 60.0f)];
         _textField.delegate = self;
     }
     return _textField;
@@ -70,11 +70,15 @@
     self.tableView.separatorInset = UIEdgeInsetsZero;
     self.tableView.rowHeight = 60.0f;
     
-    self.navigationItem.titleView = self.textField;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"✏️"
+    // self.navigationItem.titleView = self.textField;
+    self.navigationItem.title = @"Status";
+    self.tableView.tableHeaderView = self.textField;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self
                                                                              action:@selector(toggleEdit:)];
+    [self setEditing:NO animated:NO];
+    
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSArray *loadedGoals = [userDefaults arrayForKey:@"goals"];
     self.goals = [[NSMutableArray alloc] initWithArray:loadedGoals];
@@ -99,9 +103,9 @@
     if (editing) {
         [self.textField resignFirstResponder];
         
-        self.navigationItem.rightBarButtonItem.title = @"✅";
+        self.navigationItem.rightBarButtonItem.title = @"Done";
     } else {
-        self.navigationItem.rightBarButtonItem.title = @"✏️";
+        self.navigationItem.rightBarButtonItem.title = @"Edit";
     }
 }
 

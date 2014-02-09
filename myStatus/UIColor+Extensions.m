@@ -20,6 +20,11 @@
 }
 
 
++ (UIColor *)DDAGreen {
+    return [UIColor colorWithRed:0.082 green:0.608 blue:0.310 alpha:1];
+}
+
+
 + (UIColor *)DDAPaleWhite {
     return [UIColor colorWithWhite:1.0f alpha:0.4f];
 }
