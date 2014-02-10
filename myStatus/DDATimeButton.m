@@ -82,17 +82,52 @@
 - (void)updateTime {
     if (self.time) {
         [self setImage:nil forState:UIControlStateNormal];
-        [self setTitle:[self.time description] forState:UIControlStateNormal];
+        
+        NSString *title;
+        NSTimeInterval timeInterval = [self.time doubleValue];
         
         if (self.ticking) {
+            NSMutableString *timeFormat = [[NSMutableString alloc] init];
+        
+            if (timeInterval < 0) {
+                [timeFormat appendString:@"-"];
+            }
+            
+            if (fabsf(timeInterval) > 60 * 60) {
+                [timeFormat appendString:@"hh:"];
+            }
+            
+            [timeFormat appendString:@"mm:ss"];
+            
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            dateFormatter.dateFormat = timeFormat;
+            dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+            
+            NSDate *date = [NSDate dateWithTimeIntervalSince1970:timeInterval];
+            title = [dateFormatter stringFromDate:date];
+            
             if ([self.time integerValue] > 0) {
                 self.circleView.backgroundColor = [UIColor DDAGreen];
             } else {
                 self.circleView.backgroundColor = [UIColor redColor];
             }
         } else {
+            NSMutableString *text = [[NSMutableString alloc] init];
+            if (fabs(timeInterval) < 60) {
+                // Show Seconds
+                [text appendFormat:@"%.0fs", timeInterval];
+                
+            } else if (fabsf(timeInterval) < 60 * 60) {
+                // Show Minutes
+                [text appendFormat:@"%.0fm", timeInterval / 60];
+            } else {
+                // Show Hours
+                [text appendFormat:@"%.0fh", timeInterval / 60 / 60];
+            }
+            title = text;
             self.circleView.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.2f];
         }
+        [self setTitle:title forState:UIControlStateNormal];
         return;
     }
     [self setImage:[UIImage imageNamed:@"plus"] forState:UIControlStateNormal];

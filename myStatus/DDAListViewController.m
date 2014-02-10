@@ -102,6 +102,10 @@
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
     [super setEditing:editing animated:animated];
     
+    if (self.tickingIndexPath) {
+        [self stopTimingIndexPath:self.tickingIndexPath];
+    }
+    
     if (editing) {
         [self.textField resignFirstResponder];
         
