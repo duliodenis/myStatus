@@ -71,7 +71,7 @@
     [super layoutSubviews];
     
     CGSize size = self.contentView.bounds.size;
-    CGSize buttonSize = CGSizeMake(60.0f, size.height);
+    CGSize buttonSize = [self.timeButton sizeThatFits:CGSizeMake(60.0f, size.height)];
     self.timeButton.frame = CGRectMake(size.width - buttonSize.width, 0.0f, buttonSize.width, buttonSize.height);
     
     CGRect frame = self.textLabel.frame;

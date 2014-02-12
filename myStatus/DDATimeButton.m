@@ -40,6 +40,7 @@
     if (!_circleView) {
         _circleView = [[UIView alloc] init];
         _circleView.userInteractionEnabled = NO;
+        _circleView.layer.cornerRadius = 20.0f;
     }
     return _circleView;
 }
@@ -52,6 +53,10 @@
     self = [super initWithFrame:frame];
     if (self) {
         [self addSubview:self.circleView];
+        
+        // use to see placement of timeButton in its view
+        // self.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.1f];
+        
         self.titleLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:13.0f];
         self.titleLabel.adjustsFontSizeToFitWidth = YES;
         self.titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -65,15 +70,24 @@
     [super layoutSubviews];
     
     CGSize buttonSize = self.bounds.size;
-    self.circleView.frame = CGRectMake(roundf((buttonSize.width - 40.0f)/2.0f),
+
+    [self.titleLabel sizeToFit];
+    CGRect titleFrame = self.titleLabel.frame;
+    titleFrame.origin.x = roundf((buttonSize.width - titleFrame.size.width) / 2.0f);
+    titleFrame.origin.y = roundf((buttonSize.height - titleFrame.size.height) / 2.0f);
+    self.titleLabel.frame = titleFrame;
+
+    self.circleView.frame = CGRectMake(MIN(roundf((buttonSize.width - 40.0f)/2.0f), titleFrame.origin.x - 8.0f),
                                        roundf((buttonSize.height - 40.0f)/2.0f),
-                                       40.0f,
+                                       MAX(40.0f, titleFrame.size.width + 16.0f),
                                        40.0f);
-    self.circleView.layer.cornerRadius = self.circleView.bounds.size.height / 2.0f;
+}
+
+- (CGSize)sizeThatFits:(CGSize)size {
+    [self layoutSubviews];
     
-    //CGRect frame = self.titleLabel.frame;
-    //frame.origin.y += 2.0f;
-    self.titleLabel.frame =  CGRectInset(self.circleView.frame, 4.0f, 0.0f);
+    size.width = self.circleView.bounds.size.width + 20.0f;
+    return size;
 }
 
 
