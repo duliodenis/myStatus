@@ -96,6 +96,12 @@
             [self startTimingIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
         }
     }
+    
+    // if first time experience pull the keyboard up
+    if (self.goals.count == 0 && self.accomplishments.count == 0) {
+        [self.textField becomeFirstResponder];
+    }
+    
 }
 
 
@@ -207,6 +213,7 @@
 #pragma mark - UITableView Delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self.textField resignFirstResponder]; // dismiss the keyboard if you select an item
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     [tableView beginUpdates];
@@ -236,6 +243,14 @@
     
     [tableView endUpdates];
     [self save];
+}
+
+
+#pragma mark - UIScrollViewDelegate
+
+// Make the keyboard go away when you scroll
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [self.textField resignFirstResponder];
 }
 
 
@@ -286,6 +301,12 @@
     NSDictionary *goal = [self goalForIndexPath:indexPath];
     NSNumber *timeRemaining = goal[@"timeRemaining"];
     
+    // if editing, allow editing of time by picking the time, and return
+    if (self.editing) {
+        [self pickTimeWithIndexPath:indexPath];
+        return;
+    }
+    
     // Goal has timer, tick.
     if (timeRemaining) {
         // Already ticking. Stop.
@@ -307,13 +328,21 @@
     }
     
     // Goal does not have time - so allow picking
+    [self pickTimeWithIndexPath:indexPath];
+}
+
+
+- (void)pickTimeWithIndexPath:(NSIndexPath *)indexPath {
     self.editingIndexPath = indexPath;
+    NSDictionary *goal = [self goalForIndexPath:indexPath];
+    
     DDADurationPickerViewController *editTimeViewController = [[DDADurationPickerViewController alloc] init];
     editTimeViewController.delegate = self;
     editTimeViewController.duration = [goal[@"timeRemaining"] doubleValue];
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editTimeViewController];
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    
 }
 
 
@@ -324,6 +353,7 @@
     
     [self.tableView reloadRowsAtIndexPaths:@[self.tickingIndexPath] withRowAnimation:UITableViewRowAnimationNone];
 }
+
 
 - (NSDictionary *)goalForIndexPath:(NSIndexPath *)indexPath {
     return [self arrayForSection:indexPath.section][indexPath.row];

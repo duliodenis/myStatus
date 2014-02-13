@@ -8,6 +8,7 @@
 
 #import "DDAGoalTableViewCell.h"
 #import "DDATimeButton.h"
+#import "UIColor+Extensions.h"
 
 @implementation DDAGoalTableViewCell
 
@@ -89,6 +90,10 @@
         self.backgroundColor = [UIColor clearColor];
         
         self.textLabel.font = [UIFont fontWithName:@"Avenir" size:20.f];
+        
+        UIView *view = [[UIView alloc] init];
+        view.backgroundColor = [UIColor DDAGreen];
+        self.selectedBackgroundView = view;
     }
     return self;
 }

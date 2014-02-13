@@ -133,10 +133,10 @@
                 
             } else if (fabsf(timeInterval) < 60 * 60) {
                 // Show Minutes
-                [text appendFormat:@"%.0fm", timeInterval / 60];
+                [text appendFormat:@"%.0fm", floorf(timeInterval / 60)];
             } else {
                 // Show Hours
-                [text appendFormat:@"%.0fh", timeInterval / 60 / 60];
+                [text appendFormat:@"%.0fh", floorf(timeInterval / 60 / 60)];
             }
             title = text;
             self.circleView.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.2f];
