@@ -94,14 +94,19 @@
         
         if (goal[@"startedTimingAt"]) {
             [self startTimingIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+            break;
         }
     }
+}
+
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
     // if first time experience pull the keyboard up
     if (self.goals.count == 0 && self.accomplishments.count == 0) {
         [self.textField becomeFirstResponder];
     }
-    
 }
 
 
@@ -109,7 +114,7 @@
     [super setEditing:editing animated:animated];
     
     if (self.tickingIndexPath) {
-        [self stopTimingIndexPath:self.tickingIndexPath];
+        [self stopTimingIndexPath:self.tickingIndexPath reload:YES];
     }
     
     if (editing) {
@@ -210,6 +215,15 @@
 }
 
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([indexPath isEqual:self.tickingIndexPath]) {
+        return NO;
+    }
+    
+    return YES;
+}
+
+
 #pragma mark - UITableView Delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -220,6 +234,12 @@
     
     // Tapped an unachieved goal. Time to make it an accomplishment.
     if (indexPath.section == 0) {
+        
+        // if the accomplished goal is being timed - stop the timer
+        if ([indexPath isEqual:self.tickingIndexPath]) {
+            [self stopTimingIndexPath:indexPath reload:NO];
+        }
+        
         NSString *accomplishment = self.goals[indexPath.row];
         [self.goals removeObjectAtIndex:indexPath.row];
         [self.accomplishments insertObject:accomplishment atIndex:0];
@@ -311,13 +331,13 @@
     if (timeRemaining) {
         // Already ticking. Stop.
         if ([indexPath isEqual:self.tickingIndexPath]) {
-            [self stopTimingIndexPath:indexPath];
+            [self stopTimingIndexPath:indexPath reload:YES];
         }
         
         // Start ticking.
         else {
             if (self.tickingIndexPath) {
-                [self stopTimingIndexPath:indexPath];
+                [self stopTimingIndexPath:indexPath reload:YES];
             }
             
             [self setGoalValue:[NSDate date] forKey:@"startedTimingAt" atIndexPath:indexPath];
@@ -360,11 +380,13 @@
 }
 
 
-- (void)setGoal:(NSDictionary *)goal forIndexPath:(NSIndexPath *)indexPath {
+- (void)setGoal:(NSDictionary *)goal forIndexPath:(NSIndexPath *)indexPath reload:(BOOL)reload {
     NSMutableArray *array = [self arrayForSection:indexPath.section];
     array[indexPath.row] = goal;
     
-    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    if (reload) {
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
     [self save];
 }
 
@@ -373,7 +395,7 @@
     NSMutableDictionary *goal = [[self goalForIndexPath:indexPath] mutableCopy];
     goal[key] = value;
     
-    [self setGoal:goal forIndexPath:indexPath];
+    [self setGoal:goal forIndexPath:indexPath reload:YES];
 }
 
 
@@ -390,7 +412,7 @@
 }
 
 
-- (void)stopTimingIndexPath:(NSIndexPath *)indexPath {
+- (void)stopTimingIndexPath:(NSIndexPath *)indexPath reload:(BOOL)reload {
     NSDictionary *goal = [self goalForIndexPath:indexPath];
     NSDate *startedTimingAt = goal[@"startedTimingAt"];
     NSTimeInterval difference = [[NSDate date] timeIntervalSinceDate:startedTimingAt];
@@ -399,12 +421,15 @@
     NSMutableDictionary *saved = [goal mutableCopy];
     saved[@"timeRemaining"] = @(timeRemaining - difference);
     [saved removeObjectForKey:@"startedTimingAt"];
-    [self setGoal:saved forIndexPath:indexPath];
+    [self setGoal:saved forIndexPath:indexPath reload:reload];
     //            [self setGoalValue:@(timeRemaining - difference) forKey:@"timeRemaining" atIndexPath:indexPath];
     
     self.timer = nil;
     self.tickingIndexPath = nil;
-    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    
+    if (reload) {
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
 }
 
 

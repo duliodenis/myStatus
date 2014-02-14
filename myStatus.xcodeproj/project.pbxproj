@@ -259,6 +259,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = ddApps;
 				TargetAttributes = {
+					6C74A65B189713BA0051BEBA = {
+						DevelopmentTeam = FVTGESA2J4;
+					};
 					6C74A676189713BA0051BEBA = {
 						TestTargetID = 6C74A65B189713BA0051BEBA;
 					};
@@ -468,10 +471,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "myStatus/myStatus-Prefix.pch";
 				INFOPLIST_FILE = "myStatus/myStatus-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "0EB3AB24-8DC1-4485-AA41-F066DAA076E8";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -482,10 +487,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Dulio Denis (FVTGESA2J4)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "myStatus/myStatus-Prefix.pch";
 				INFOPLIST_FILE = "myStatus/myStatus-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "0EB3AB24-8DC1-4485-AA41-F066DAA076E8";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
