@@ -212,9 +212,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		6C74A65B189713BA0051BEBA /* Status */ = {
+		6C74A65B189713BA0051BEBA /* Streak */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6C74A688189713BA0051BEBA /* Build configuration list for PBXNativeTarget "Status" */;
+			buildConfigurationList = 6C74A688189713BA0051BEBA /* Build configuration list for PBXNativeTarget "Streak" */;
 			buildPhases = (
 				2360E218411743F58EDFB53C /* Check Pods Manifest.lock */,
 				6C74A658189713BA0051BEBA /* Sources */,
@@ -226,7 +226,7 @@
 			);
 			dependencies = (
 			);
-			name = Status;
+			name = Streak;
 			productName = myStatus;
 			productReference = 6C74A65C189713BA0051BEBA /* Status.app */;
 			productType = "com.apple.product-type.application";
@@ -279,7 +279,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				6C74A65B189713BA0051BEBA /* Status */,
+				6C74A65B189713BA0051BEBA /* Streak */,
 				6C74A676189713BA0051BEBA /* myStatusTests */,
 			);
 		};
@@ -368,7 +368,7 @@
 /* Begin PBXTargetDependency section */
 		6C74A67D189713BA0051BEBA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 6C74A65B189713BA0051BEBA /* Status */;
+			target = 6C74A65B189713BA0051BEBA /* Streak */;
 			targetProxy = 6C74A67C189713BA0051BEBA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -551,7 +551,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6C74A688189713BA0051BEBA /* Build configuration list for PBXNativeTarget "Status" */ = {
+		6C74A688189713BA0051BEBA /* Build configuration list for PBXNativeTarget "Streak" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6C74A689189713BA0051BEBA /* Debug */,

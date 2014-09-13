@@ -21,7 +21,7 @@
         self.returnKeyType = UIReturnKeyGo;
         self.font = [UIFont fontWithName:@"Avenir" size:18.0f];
         self.tintColor = [UIColor DDAOrange];
-        self.placeholder = @"Enter a goal to accomplish";
+        self.placeholder = @"Start a streak";
     }
     return self;
 }

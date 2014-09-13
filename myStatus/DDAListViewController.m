@@ -72,7 +72,7 @@
     self.tableView.rowHeight = 60.0f;
     
     // self.navigationItem.titleView = self.textField;
-    self.navigationItem.title = @"Status";
+    self.navigationItem.title = @"Streak";
     self.tableView.tableHeaderView = self.textField;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
                                                                               style:UIBarButtonItemStylePlain

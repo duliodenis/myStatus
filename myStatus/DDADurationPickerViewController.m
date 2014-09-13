@@ -55,8 +55,8 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done:)];
     
-    UILabel *instructions = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, self.topLayoutGuide.length, 280.0f, 200.0f)];
-    instructions.text = @"Pick a time duration for your goal.";
+    UILabel *instructions = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, self.topLayoutGuide.length, 300.0f, 200.0f)];
+    instructions.text = @"Pick a time for your streak reminder.";
     instructions.textAlignment = NSTextAlignmentCenter;
     instructions.textColor = [UIColor whiteColor];
     
